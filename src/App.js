@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Transition from "react-transition-group/transition";
+import Transition from "react-transition-group/Transition";
 
 import "./App.css";
 import Modal from "./components/Modal/Modal";
@@ -7,29 +7,41 @@ import Backdrop from "./components/Backdrop/Backdrop";
 import List from "./components/List/List";
 
 class App extends Component {
-  state = { modalIsOpen: false, showBlock: false };
+  state = {
+    modalIsOpen: false,
+    showBlock: false
+  };
 
-  showModal = () => this.setState({ modalIsOpen: true });
-  closeModal = () => this.setState({ modalIsOpen: false });
+  showModal = () => {
+    this.setState({ modalIsOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+  };
 
   render() {
     return (
       <div className="App">
         <h1>React Animations</h1>
         <button
-          className="button"
+          className="Button"
           onClick={() =>
             this.setState(prevState => ({ showBlock: !prevState.showBlock }))
           }
         >
-          Show/Hide
+          Toggle
         </button>
         <br />
         <Transition
           in={this.state.showBlock}
-          timeout={300}
+          timeout={1000}
           mountOnEnter
           unmountOnExit
+          onEnter={() => console.log("enter")}
+          onEntering={() => console.log("entering")}
+          onExiting={() => console.log("exiting")}
+          onExit={() => console.log("exit")}
         >
           {state => (
             <div
@@ -38,15 +50,14 @@ class App extends Component {
                 width: 100,
                 height: 100,
                 margin: "auto",
-                opacity: state === "exiting" ? 0 : 1,
-                transition: `opacity 1s ease-out`
+                transition: "opacity 1s ease-out",
+                opacity: state === "exiting" ? 0 : 1
               }}
             />
           )}
         </Transition>
-
         {this.state.modalIsOpen ? (
-          <Modal closed={this.closeModal} show={this.state.modalIsOpen} />
+          <Modal show={this.state.modalIsOpen} closed={this.closeModal} />
         ) : null}
         {this.state.modalIsOpen ? (
           <Backdrop show={this.state.modalIsOpen} />
